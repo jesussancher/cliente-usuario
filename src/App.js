@@ -1,10 +1,12 @@
 import React from "react";
+import Form from "./components/form"
+import Table from "./components/table"
 import "./css/styles.css"
 
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       users: []
     };
@@ -16,6 +18,10 @@ class App extends React.Component {
       .then(response => response.json())
       .then(results => this.setState({ users: results.data }))
       .catch(error => console.log(error));
+  }
+
+  refresh(){
+    window.location.reload(false)
   }
 
   addPost = event => {
@@ -42,47 +48,16 @@ class App extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+
   
   render() {
  
     return (
       <div className="list-container">
-        <form onInput={this.handleInput} onSubmit={this.addPost}>
-          <h3>Datos Personales</h3>
-          <input className="input" name="name" type="text" placeholder="Nombre" required />
-          <br></br>
-          <input className="input" name="lastname" type="text" placeholder="Apellido" required />
-          <br></br>
-          <br></br>
-          <h3>Datos de Usuario</h3>
-          <input className="input" name="email" type="email" placeholder="Email" required />
-          <br></br>
-          <input className="input" name="password" type="password" placeholder="Contraseña" required />
-          <br></br>
-          <input className="btn" type="submit" value="Registrar"/>
-        </form>
+        <Form onInput={this.handleInput} onSubmit={this.addPost}/>
         <br></br>
         <br></br>
-        <div className="row">
-          <table className="table">
-          <tr className="tr">
-            <th className="th">Nombre</th>
-            <th className="th">Apellido</th> 
-            <th className="th">Email</th>
-            <th className="th">Contraseña</th>
-          </tr>
-            {this.state.users.map(post => {
-                    return (
-                      <tr className="tr">
-                        <td className="td">{post.name}</td>
-                        <td className="td">{post.lastname}</td>
-                        <td className="td">{post.email}</td>
-                        <td className="td">{post.password}</td>
-                      </tr>
-                    );
-            })}
-          </table>
-        </div>
+        <Table usuarios={this.state.users}/>
       </div>
     );
   }
